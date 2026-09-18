@@ -1,0 +1,20 @@
+export const softyProducts = [
+  { _id: 'softy-lemon', slug: 'lemon-face-wash', name: 'Softyy Lemon Face Wash', description: 'Deep cleansing and oil control with a fresh lemon finish.', shortDescription: 'A refreshing daily cleanser that lifts away oil and buildup without leaving skin feeling tight.', benefits: ['Oil-control cleanse', 'Fresh lemon finish', 'Daily-use formula'], price: 350, image: '/products/softyy/lemon-face-wash.jpg', images: ['/products/softyy/lemon-face-wash.jpg'], category: 'face-care', isBestSeller: true, concerns: ['Oil Control', 'Acne Care'], volume: '100 ml', stock: 12 },
+  { _id: 'softy-milk', slug: 'milk-expert-face-wash', name: 'Softyy Milk Expert Face Wash', description: 'Gentle cleansing for skin that needs softness and moisture.', price: 350, image: '/products/softyy/milk-face-wash.jpg', images: ['/products/softyy/milk-face-wash.jpg'], category: 'face-care', isBestSeller: true, concerns: ['Sensitive Skin'], volume: '100 ml', stock: 12 },
+  { _id: 'softy-serum', slug: 'acne-control-serum', name: 'Softyy Acne Control Serum', description: 'Targeted salicylic acid and niacinamide care for clearer skin.', price: 450, image: '/products/softyy/acne-serum.jpg', images: ['/products/softyy/acne-serum.jpg'], category: 'serums', isBestSeller: true, isNew: true, concerns: ['Acne Care', 'Oil Control'], volume: '30 ml', stock: 12 },
+  { _id: 'softy-papaya', slug: 'papaya-face-wash', name: 'Softyy Papaya Face Wash', description: 'A gentle daily cleanse with papaya-inspired glow care.', shortDescription: 'A brightening daily face wash that clears away dullness while keeping skin feeling comfortable.', benefits: ['Fresh glow care', 'Gentle deep cleanse', 'For everyday skin'], price: 350, image: '/products/softyy/papaya-face-wash.jpg', images: ['/products/softyy/papaya-face-wash.jpg'], category: 'face-care', isBestSeller: true, concerns: ['Brightening'], volume: '100 ml', stock: 12 },
+  { _id: 'softy-salicylic', slug: 'salicylic-face-wash', name: 'Softyy Salicylic Acid Face Wash', description: 'Deep pore cleansing support for acne-prone skin.', price: 350, image: '/products/softyy/salicylic-face-wash.jpg', images: ['/products/softyy/salicylic-face-wash.jpg'], category: 'face-care', concerns: ['Acne Care'], volume: '100 ml', stock: 12 },
+  { _id: 'softy-gel', slug: 'milk-soothing-gel', name: 'Softyy Milk Soothing Gel', description: 'Lightweight hydration and calming comfort for daily care.', price: 480, image: '/products/softyy/milk-soothing-gel.jpg', images: ['/products/softyy/milk-soothing-gel.jpg'], category: 'soothing-care', isBestSeller: true, concerns: ['Soothing', 'Moisturizing'], volume: '250 gm', stock: 12 },
+]
+export const softyCategories = [
+  { _id: 'face-care', name: 'Face Care', slug: 'face-care', image: '/products/softyy/lemon-face-wash.jpg' },
+  { _id: 'serums', name: 'Serums', slug: 'serums', image: '/products/softyy/acne-serum.jpg' },
+  { _id: 'soothing-care', name: 'Soothing Care', slug: 'soothing-care', image: '/products/softyy/milk-soothing-gel.jpg' },
+  { _id: 'daily-essentials', name: 'Daily Essentials', slug: 'daily-essentials', image: '/products/softyy/papaya-face-wash.jpg' },
+]
+export const softySettings = {
+  companyName: 'Softy', slogan: 'Gentle care for real skin.', announcementText: 'Free delivery on orders over BDT 1,500 | 100% original products | Easy returns',
+  homeHero: { eyebrow: 'Everyday care', title: 'Soft on you. Kind to your skin.', description: 'Gentle, effective care for the rituals that help you feel your best every day.', image: '/editorial/softyy-hero-editorial.png', buttonText: 'Shop skincare', buttonLink: '/shop' },
+  promo: { title: 'Care that feels good every day.', description: 'Simple formulas made for a softer, brighter routine.', image: '/editorial/softyy-boutique-care.png', buttonText: 'Explore products', buttonLink: '/shop' },
+  footerAbout: 'Thoughtfully formulated skincare for a cleaner, brighter, healthier routine.', contact: { email: 'globalcosmeticslines@gmail.com', phone: '01911-238421', address: 'Dhaka, Bangladesh' },
+}

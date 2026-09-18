@@ -1,0 +1,144 @@
+.softy-product-page {
+  background:
+    radial-gradient(circle at 83% 14%, rgb(48 71 157 / 7%), transparent 23rem),
+    linear-gradient(180deg, #fbfcff 0%, #f7f9fd 48%, #ffffff 100%);
+}
+
+.softy-product-main {
+  max-width: 82rem;
+}
+
+.softy-detail-layout {
+  align-items: start;
+}
+
+.softy-product-gallery {
+  position: sticky;
+  top: 6.7rem;
+}
+
+.softy-product-photo {
+  border-color: rgb(48 71 157 / 15%);
+  box-shadow: 0 20px 55px rgb(21 36 92 / 10%);
+}
+
+.softy-product-photo::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  border: 1px solid rgb(255 255 255 / 50%);
+  border-radius: inherit;
+}
+
+.softy-product-purchase {
+  max-width: none;
+  padding-top: 0.35rem;
+}
+
+.softy-price-row {
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid rgb(48 71 157 / 13%);
+}
+
+.softy-detail-summary {
+  margin-top: 1.2rem;
+  padding-left: 1rem;
+  border-left: 3px solid #f21d2a;
+}
+
+.softy-detail-summary > p {
+  max-width: 35rem;
+  color: rgb(16 24 50 / 74%);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.softy-detail-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.9rem;
+}
+
+.softy-detail-benefits span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.38rem 0.62rem;
+  color: #283f94;
+  background: #eef2ff;
+  border: 1px solid rgb(48 71 157 / 10%);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.softy-detail-divider {
+  margin-top: 1.45rem;
+  margin-bottom: 1.45rem;
+  border-color: rgb(48 71 157 / 12%);
+}
+
+.softy-purchase-controls {
+  max-width: none;
+}
+
+.softy-quantity-control {
+  border-color: rgb(48 71 157 / 22%);
+  background: rgb(255 255 255 / 72%);
+}
+
+.softy-add-to-cart {
+  min-height: 3.5rem;
+  box-shadow: 0 12px 26px rgb(40 63 148 / 22%);
+}
+
+.softy-trust-points > div {
+  min-height: 5.65rem;
+  border: 1px solid rgb(48 71 157 / 10%);
+  background: rgb(255 255 255 / 74%);
+  box-shadow: 0 8px 18px rgb(21 36 92 / 4%);
+}
+
+@media (max-width: 1023px) {
+  .softy-product-gallery {
+    position: static;
+  }
+
+  .softy-product-purchase {
+    max-width: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .softy-detail-layout {
+    grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr) !important;
+    gap: clamp(3rem, 6vw, 5.5rem) !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .softy-product-main {
+    padding-top: 1.25rem;
+  }
+
+  .softy-product-photo {
+    aspect-ratio: 1 / 1.14;
+    border-radius: 1rem;
+  }
+
+  .softy-detail-summary > p {
+    font-size: 0.93rem;
+  }
+
+  .softy-trust-points {
+    gap: 0.45rem;
+  }
+
+  .softy-trust-points > div {
+    min-height: 5rem;
+    padding: 0.65rem 0.35rem;
+  }
+}
