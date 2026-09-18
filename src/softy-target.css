@@ -1,5 +1,7 @@
 :root { --softy-plum:#87548a; --softy-plum-deep:#5f3d68; --softy-ink:#241d2b; --softy-pink:#db6d97; --softy-blush:#fff0f4; --softy-lilac:#f5eff8; --softy-milk:#fffdfd; --softy-line:#eee2e8; }
 body { background:var(--softy-milk); color:var(--softy-ink); }
+.admin-shell :is(button,a)[class*="bg-oxblood"],.admin-shell :is(button,a)[class*="bg-rose"],.admin-login :is(button,a)[class*="bg-oxblood"],.admin-login :is(button,a)[class*="bg-rose"] { color:#fff !important; }
+.admin-login .bg-oxblood > * { color:#fff !important; }
 .softy-announcement { min-height:34px; padding:9px 16px; background:#f8dfe5; background-image:none; color:#2a222c; font-size:11px; font-weight:650; letter-spacing:.03em; }
 .softy-header { background:rgb(255 253 253 / 95%); border-bottom-color:var(--softy-line); }
 .softy-header-inner { max-width:1360px; height:76px; }

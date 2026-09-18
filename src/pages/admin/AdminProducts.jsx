@@ -378,7 +378,7 @@ const AdminProducts = () => {
           <div className="flex flex-wrap gap-2">
             <Link
               to="/admin/products/bulk-edit"
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-oxblood-dark text-white text-sm font-semibold rounded-lg shadow-sm hover:bg-oxblood transition-colors"
             >
               Bulk Edit
             </Link>

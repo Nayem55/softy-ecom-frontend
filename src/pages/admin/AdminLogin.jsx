@@ -80,7 +80,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-ivory flex flex-col items-center justify-center px-4">
+    <div className="admin-login min-h-screen bg-ivory flex flex-col items-center justify-center px-4">
       <SEO
         title="Admin Login"
         description="Softy ecommerce admin login."
@@ -106,7 +106,7 @@ export default function AdminLogin() {
           <h1 className="text-2xl font-bold text-ivory tracking-[0.15em] uppercase">
             Softy
           </h1>
-          <p className="text-gold mt-2 text-sm tracking-widest uppercase font-medium">
+          <p className="mt-2 text-sm tracking-widest uppercase font-medium" style={{ color: '#ffffff' }}>
             Admin Panel
           </p>
         </div>

@@ -127,9 +127,9 @@ function Sidebar({ open, onClose }) {
         `}
       >
         {/* Logo area */}
-        <div className="px-6 py-5 border-b border-white/10">
-          <img src="/brand/softy-ecom-logo.png" alt="Softy" className="h-11 w-auto max-w-full object-contain object-left brightness-0 invert" />
-          <p className="text-gold text-[10px] tracking-[0.25em] uppercase mt-1 font-semibold">
+        <div className="px-6 py-5 border-b border-white/15">
+          <img src="/brand/softy-ecom-logo.png" alt="Softy" className="-ml-7 h-11 w-auto max-w-none object-contain object-left brightness-0 invert" />
+          <p className="text-[#ffd7e5] text-[10px] tracking-[0.25em] uppercase mt-1 font-semibold">
             Admin Panel
           </p>
         </div>
@@ -152,8 +152,8 @@ function Sidebar({ open, onClose }) {
                   transition-all duration-150 group
                   ${
                     isActive
-                      ? "bg-gold/20 text-gold"
-                      : "text-ivory/70 hover:bg-white/10 hover:text-ivory"
+                      ? "bg-white/16 text-white shadow-sm"
+                      : "text-white/85 hover:bg-white/10 hover:text-white"
                   }
                 `}
               >
@@ -172,7 +172,7 @@ function Sidebar({ open, onClose }) {
                 </span>
                 <span className="tracking-wide">{item.label}</span>
                 {isActive && (
-                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-gold" />
+                  <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#ffd7e5]" />
                 )}
               </NavLink>
             );
@@ -462,7 +462,7 @@ export default function AdminLayout() {
         description="Softy ecommerce management panel."
         noIndex
       />
-      <div className="min-h-screen bg-ivory">
+      <div className="admin-shell min-h-screen bg-ivory">
         {/* Sidebar */}
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
