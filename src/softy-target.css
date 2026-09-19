@@ -1,5 +1,10 @@
 :root { --softy-plum:#87548a; --softy-plum-deep:#5f3d68; --softy-ink:#241d2b; --softy-pink:#db6d97; --softy-blush:#fff0f4; --softy-lilac:#f5eff8; --softy-milk:#fffdfd; --softy-line:#eee2e8; }
 body { background:var(--softy-milk); color:var(--softy-ink); }
+body,button,input,textarea,select { font-family:"Manrope",Arial,sans-serif; }
+.font-serif,.softy-hero h1,.softy-section h2,.softy-promo h2,.softy-shop-hero h1,.softy-info h1,.softy-need h3 { font-family:"Lora",Georgia,serif; font-optical-sizing:auto; letter-spacing:0; }
+.softy-hero h1 { font-size:clamp(2.8rem,4.1vw,4.75rem); line-height:1.04; }
+.softy-section h2,.softy-promo h2,.softy-shop-hero h1,.softy-info h1 { line-height:1.14; }
+.softy-need h3 { font-weight:500; line-height:1.25; }
 .admin-shell :is(button,a)[class*="bg-oxblood"],.admin-shell :is(button,a)[class*="bg-rose"],.admin-login :is(button,a)[class*="bg-oxblood"],.admin-login :is(button,a)[class*="bg-rose"] { color:#fff !important; }
 .admin-login .bg-oxblood > * { color:#fff !important; }
 .softy-announcement { min-height:34px; padding:9px 16px; background:#f8dfe5; background-image:none; color:#2a222c; font-size:11px; font-weight:650; letter-spacing:.03em; }
@@ -58,7 +63,7 @@ body { background:var(--softy-milk); color:var(--softy-ink); }
 .softy-need-art span { position:absolute; top:14px; left:16px; display:grid; width:30px; height:30px; place-items:center; border-radius:50%; background:rgb(255 253 253 / 94%); color:var(--softy-plum); font-size:10px; font-weight:800; }
 .softy-need-copy { padding:1.05rem .35rem .25rem; }
 .softy-need small { color:var(--softy-pink); font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-.softy-need h3 { margin:.4rem 0; font-family:"Libre Caslon Display",Georgia,serif; font-size:1.55rem; font-weight:400; }
+.softy-need h3 { margin:.4rem 0; font-family:"Lora",Georgia,serif; font-size:1.55rem; font-weight:500; line-height:1.25; }
 .softy-need p { min-height:2.7rem; margin:0; color:#746675; font-size:12px; line-height:1.5; }
 .softy-need-link { display:inline-flex; align-items:center; gap:.35rem; margin-top:.85rem; color:var(--softy-plum); font-size:12px; font-weight:750; }
 .softy-need:hover .softy-need-art { transform:translateY(-5px); box-shadow:0 20px 34px rgb(100 61 95 / 15%); }
