@@ -248,7 +248,7 @@ export default function ProductDetail() {
         type="product"
       />
       <div className="bg-charcoal/5 border-b border-charcoal/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 lg:py-2.5">
           <nav className="text-sm text-charcoal/60">
             <Link to="/" className="hover:text-oxblood transition-colors">Home</Link>
             <span className="mx-2">/</span>
@@ -270,7 +270,7 @@ export default function ProductDetail() {
         </div>
       </div>
 
-      <div className="softy-product-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <div className="softy-product-main max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 lg:py-7">
         <div className="softy-detail-layout grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <div className="softy-product-gallery">
             <div className="softy-product-photo relative aspect-[3/4] rounded-2xl overflow-hidden bg-white border border-charcoal/10 group">

@@ -115,7 +115,67 @@
 @media (min-width: 1024px) {
   .softy-detail-layout {
     grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr) !important;
-    gap: clamp(3rem, 6vw, 5.5rem) !important;
+    gap: clamp(2.25rem, 4.5vw, 4.25rem) !important;
+  }
+
+  .softy-product-main {
+    padding-top: clamp(1.4rem, 2.6vh, 2rem);
+    padding-bottom: 2rem;
+  }
+
+  .softy-product-photo {
+    height: min(39rem, calc(100vh - 15rem));
+    aspect-ratio: auto;
+  }
+
+  .softy-price-row {
+    margin-top: 0.95rem;
+    padding-bottom: 0.9rem;
+  }
+
+  .softy-detail-summary {
+    margin-top: 0.9rem;
+  }
+
+  .softy-detail-summary > p {
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  .softy-detail-benefits {
+    gap: 0.4rem;
+    margin-top: 0.65rem;
+  }
+
+  .softy-detail-divider {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .softy-purchase-controls {
+    margin-top: 1rem !important;
+    gap: 0.55rem;
+  }
+
+  .softy-purchase-controls .h-\[52px\],
+  .softy-purchase-controls .softy-add-to-cart {
+    min-height: 3rem;
+    height: 3rem;
+  }
+
+  .softy-purchase-controls .w-\[52px\] {
+    width: 3rem;
+  }
+
+  .softy-trust-points {
+    margin-top: 0.8rem !important;
+    gap: 0.65rem;
+  }
+
+  .softy-trust-points > div {
+    min-height: 4.3rem;
+    gap: 0.3rem;
+    padding: 0.5rem 0.6rem;
   }
 }
 

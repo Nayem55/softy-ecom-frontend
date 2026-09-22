@@ -182,10 +182,10 @@ body,button,input,textarea,select { font-family:"Manrope",Arial,sans-serif; }
   .softy-trust-points>div { min-height:4.8rem; }
   .softy-footer { padding-bottom:26px; }
   .softy-footer:before { margin-bottom:38px; }
-  .softy-mobile-bottom { position:fixed; z-index:70; right:var(--softy-mobile-gutter); bottom:12px; left:var(--softy-mobile-gutter); display:grid; grid-template-columns:repeat(4,1fr); padding:7px 5px; border:1px solid rgb(255 255 255 / 70%); border-radius:17px; background:rgb(57 34 67 / 96%); box-shadow:0 12px 32px rgb(38 24 46 / 28%); backdrop-filter:blur(14px); }
+  .softy-mobile-bottom { position:fixed; z-index:70; right:var(--softy-mobile-gutter); bottom:12px; left:var(--softy-mobile-gutter); display:grid; grid-template-columns:repeat(4,1fr); padding:7px 5px; border:1px solid rgb(255 255 255 / 70%); border-radius:17px; background:rgb(35 67 153 / 96%); box-shadow:0 12px 32px rgb(31 54 125 / 30%); backdrop-filter:blur(14px); }
   .softy-mobile-bottom a { display:grid; min-height:45px; place-items:center; align-content:center; gap:3px; color:#f9edf4; font-size:9px; font-weight:650; }
   .softy-mobile-bottom a.active { color:#fff; }
-  .softy-mobile-bottom a.active svg { color:#f2a8c1; }
+  .softy-mobile-bottom a.active svg { color:#ff9aa5; }
   .softy-mobile-cart { position:relative; display:grid; }
   .softy-mobile-cart b { position:absolute; top:-7px; right:-10px; display:grid; width:15px; height:15px; place-items:center; border-radius:50%; background:var(--softy-pink); color:#fff; font-size:9px; }
   .fixed.bottom-6.right-6 { right:18px; bottom:88px; width:48px; height:48px; }
