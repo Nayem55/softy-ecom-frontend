@@ -50,7 +50,7 @@ export default function Navbar() {
   return <>
     <div className="softy-announcement">{settings.announcementText}</div>
     <header className="softy-header"><div className="softy-header-inner">
-      <Link className="softy-logo" to="/" aria-label="Softy home"><img src="/brand/softy-ecom-logo.png" alt="Softy" /></Link>
+      <Link className="softy-logo" to="/" aria-label="Softy home"><img src="/brand/softy-ecom-logo-v2.png" alt="Softy" /></Link>
       <nav className="softy-nav">{links.map(([label, href]) => <Link className={location.pathname === href.split('?')[0] ? 'active' : ''} key={label} to={href}>{label}</Link>)}</nav>
       <div className="softy-search-wrap">
         <form onSubmit={goSearch} className="softy-search"><Search size={18}/><input value={query} onFocus={() => setSearchOpen(true)} onBlur={closeSearch} onKeyDown={onSearchKeyDown} onChange={e => { setQuery(e.target.value); setSearchOpen(true) }} placeholder="Search products" aria-label="Search products" aria-expanded={searchOpen && query.trim().length >= 2} aria-controls="softy-search-suggestions" /></form>

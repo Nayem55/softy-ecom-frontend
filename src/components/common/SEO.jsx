@@ -10,7 +10,7 @@ const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin).repla
 export default function SEO({
   title,
   description = DEFAULT_DESCRIPTION,
-  image = '/brand/softy-ecom-logo.png',
+  image = '/brand/softy-ecom-logo-v2.png',
   type = 'website',
   noIndex = false,
   canonical,
