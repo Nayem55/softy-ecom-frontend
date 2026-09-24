@@ -161,7 +161,7 @@ const OrderDetail = () => {
 
   const customerName = order.user?.name || order.shippingAddress?.name || order.customerName || 'Guest';
   const phone = order.user?.phone || order.shippingAddress?.phone || order.phone || '-';
-  const email = order.user?.email || order.email || '-';
+  const email = order.shippingInfo?.email || order.user?.email || order.email || '-';
   const address = order.shippingAddress || order.address || {};
   const addressLine = [address.street || address.address, address.city, address.district, address.division, address.zip || address.postalCode].filter(Boolean).join(', ') || '-';
   const bkashTransactionId = order.bkashTransactionId || order.bkashTrxId || order.transactionId || '';

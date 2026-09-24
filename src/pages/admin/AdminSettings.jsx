@@ -36,16 +36,17 @@ function Field({ label, path, settings, onChange, type = 'text', ...props }) {
     </div>
   );
 }
+function Toggle({ label, path, settings, onChange, description }) { const checked = !!getSettingValue(settings, path); return <label className="flex items-start gap-3 mb-4 cursor-pointer"><input type="checkbox" checked={checked} onChange={e => onChange(path, e.target.checked)} className="mt-0.5 h-4 w-4 accent-oxblood" /><span><span className="text-sm font-medium block">{label}</span>{description && <span className="text-xs text-charcoal/50 block mt-0.5">{description}</span>}</span></label>; }
 
 export default function AdminSettings() {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(null);
-  const [expanded, setExpanded] = useState({ general: true, payment: true, policies: false, announcement: false });
+  const [expanded, setExpanded] = useState({ general: true, payment: true, policies: false, announcement: false, integrations: true, email: true });
 
   useEffect(() => {
-    adminAPI.get('/settings')
+    adminAPI.get('/admin/settings')
       .then((settingsRes) => {
         const siteSettings = settingsRes.data.settings || {};
         setSettings(siteSettings);
@@ -177,6 +178,22 @@ export default function AdminSettings() {
       <Section title="Announcement Bar" id="announcement" expanded={expanded} onToggle={toggle}>
         <Field label="Announcement Text" path="announcementText" settings={settings} onChange={handleChange} />
         <p className="text-xs text-charcoal/50 mt-1">This text scrolls in the top bar on the storefront.</p>
+      </Section>
+      <Section title="Marketing & Integrations" id="integrations" expanded={expanded} onToggle={toggle}>
+        <p className="text-xs text-charcoal/50 italic mb-5">Connect tracking and image services from the admin panel. Changes take effect after saving.</p>
+        <div className="border-b border-line pb-5 mb-5"><Toggle label="Enable Google Analytics" path="integrations.googleAnalytics.enabled" settings={settings} onChange={handleChange} description="Tracks storefront visits and route changes." /><Field label="Measurement ID" path="integrations.googleAnalytics.measurementId" settings={settings} onChange={handleChange} placeholder="G-XXXXXXXXXX" /></div>
+        <div className="border-b border-line pb-5 mb-5"><Toggle label="Enable Facebook Pixel" path="integrations.facebookPixel.enabled" settings={settings} onChange={handleChange} description="Tracks page views for Meta advertising." /><Field label="Pixel ID" path="integrations.facebookPixel.pixelId" settings={settings} onChange={handleChange} placeholder="123456789012345" /></div>
+        <Toggle label="Enable Cloudinary uploads" path="integrations.cloudinary.enabled" settings={settings} onChange={handleChange} description="Uses the configured Cloudinary account for admin uploads." />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><Field label="Cloud name" path="integrations.cloudinary.cloudName" settings={settings} onChange={handleChange} placeholder="your-cloud-name" /><Field label="Upload preset" path="integrations.cloudinary.uploadPreset" settings={settings} onChange={handleChange} placeholder="your-upload-preset" /></div>
+        <Field label="Folder" path="integrations.cloudinary.folder" settings={settings} onChange={handleChange} placeholder="softy-ecommerce" /><p className="text-xs text-charcoal/50 mt-1">Cloudinary API key and secret remain server-only in `.env`.</p>
+      </Section>
+      <Section title="Order confirmation email" id="email" expanded={expanded} onToggle={toggle}>
+        <p className="text-xs text-charcoal/50 italic mb-5">Customer emails use the email address entered at checkout. Store forwarding sends the same message to your internal address.</p>
+        <Toggle label="Send to customer checkout email" path="emailSettings.enabled" settings={settings} onChange={handleChange} description="The order confirmation is sent automatically to the customer’s checkout email." />
+        <Toggle label="Forward a copy to the store" path="emailSettings.forwardingEnabled" settings={settings} onChange={handleChange} description="Send a copy to the internal forwarding address below." />
+        <Field label="Store/admin forwarding email" path="emailSettings.forwardingEmail" settings={settings} onChange={handleChange} type="email" placeholder="orders@yourstore.com" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><Field label="Sender name" path="emailSettings.senderName" settings={settings} onChange={handleChange} placeholder="Softy" /><Field label="Reply-to email" path="emailSettings.replyTo" settings={settings} onChange={handleChange} type="email" placeholder="support@yourstore.com" /></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><Field label="Sender Gmail / SMTP username" path="emailSettings.smtpUser" settings={settings} onChange={handleChange} type="email" placeholder="your-store@gmail.com" /><Field label="Sender Gmail app password" path="emailSettings.smtpPassword" settings={settings} onChange={handleChange} type="text" placeholder="16-character app password" /></div>
       </Section>
 
       <div className="sticky bottom-4 flex justify-end">

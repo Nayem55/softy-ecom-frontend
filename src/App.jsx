@@ -21,6 +21,7 @@ import StaticPage from './pages/public/StaticPage';
 import SoftyInfoPage from './pages/public/SoftyInfoPage';
 import NotFound from './pages/public/NotFound';
 import SEO from './components/common/SEO';
+import MarketingIntegrations from './components/common/MarketingIntegrations';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
 import Dashboard from './pages/admin/Dashboard';
@@ -67,6 +68,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <SEO />
+      <MarketingIntegrations />
       <ScrollToTop />
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />
