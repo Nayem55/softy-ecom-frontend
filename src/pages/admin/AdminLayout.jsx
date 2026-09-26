@@ -128,8 +128,8 @@ function Sidebar({ open, onClose }) {
       >
         {/* Logo area */}
         <div className="px-6 py-5 border-b border-white/15">
-          <div className="flex h-11 w-32 items-center justify-center overflow-hidden rounded-md bg-white px-2 py-1">
-            <img src="/brand/softy-ecom-logo-v2.png" alt="Softy" className="h-full w-full object-contain" />
+          <div className="flex h-12 w-40 items-center justify-center overflow-hidden rounded-lg bg-white px-2.5 py-1.5">
+            <img src="/brand/softyy-logo.png" alt="Softy" className="h-full w-full object-contain" />
           </div>
           <p className="text-[#ffd7e5] text-[10px] tracking-[0.25em] uppercase mt-1 font-semibold">
             Admin Panel
