@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../../api/axios';
+import { optimizedImageUrl, optimizedImageSrcSet } from '../../utils/imageUrl';
 
 export default function HeroSlider() {
   const [banners, setBanners] = useState([]);
@@ -123,8 +124,8 @@ export default function HeroSlider() {
         {banners.map((b, i) => (
           <div key={i} className="relative flex h-full min-w-full items-center">
             <picture className="absolute inset-0 block">
-              {b.mobileImage && <source media="(max-width: 767px)" srcSet={b.mobileImage} />}
-              <img src={b.image} alt={b.title || 'Homepage banner'} className="h-full w-full object-cover object-center" />
+              {b.mobileImage && <source media="(max-width: 767px)" srcSet={optimizedImageUrl(b.mobileImage, { width: 1000, quality: 'auto:good' })} />}
+              <img src={optimizedImageUrl(b.image, { width: 2000, quality: 'auto:good' })} srcSet={optimizedImageSrcSet(b.image, [1000, 1600, 2000], { quality: 'auto:good' })} sizes="100vw" alt={b.title || 'Homepage banner'} className="h-full w-full object-cover object-center" />
             </picture>
             <div className="absolute inset-0 bg-gradient-to-r from-charcoal/60 via-charcoal/10 to-transparent" />
             <div className="relative z-10 text-white max-w-lg px-8 sm:px-14">

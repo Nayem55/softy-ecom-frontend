@@ -136,6 +136,7 @@ const BannerForm = ({ initial, onSubmit, onCancel, loading }) => {
   const uploadImage = async (file) => {
     const fd = new FormData();
     fd.append('file', file);
+    fd.append('uploadType', 'banner');
     const upRes = await adminAPI.post('/upload', fd, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });

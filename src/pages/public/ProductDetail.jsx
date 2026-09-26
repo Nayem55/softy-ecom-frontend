@@ -6,6 +6,7 @@ import { useWishlist } from '../../context/WishlistContext';
 import API from '../../api/axios';
 import toast from 'react-hot-toast';
 import SEO from '../../components/common/SEO';
+import { optimizedImageUrl, optimizedImageSrcSet } from '../../utils/imageUrl';
 import { Sparkles } from 'lucide-react';
 
 const isObjectId = (value) => typeof value === 'string' && /^[a-f\d]{24}$/i.test(value);
@@ -275,7 +276,9 @@ export default function ProductDetail() {
           <div className="softy-product-gallery">
             <div className="softy-product-photo relative aspect-[3/4] rounded-2xl overflow-hidden bg-white border border-charcoal/10 group">
               <img
-                src={images[selectedImage] || images[0]}
+                src={optimizedImageUrl(images[selectedImage] || images[0], { width: 1000 })}
+                srcSet={optimizedImageSrcSet(images[selectedImage] || images[0], [560, 800, 1000])}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 alt={product.name}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -323,7 +326,7 @@ export default function ProductDetail() {
                         : 'border-charcoal/10 hover:border-oxblood/30 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+                    <img src={optimizedImageUrl(img, { width: 240 })} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" loading="lazy" />
                   </button>
                 ))}
               </div>
