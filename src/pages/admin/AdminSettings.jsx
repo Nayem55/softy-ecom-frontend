@@ -85,8 +85,8 @@ export default function AdminSettings() {
           }))
           .filter((link) => link.label && link.url),
       };
-      await adminAPI.put('/admin/settings', cleanedSettings);
-      setSettings(cleanedSettings);
+      const response = await adminAPI.put('/admin/settings', cleanedSettings);
+      setSettings(response.data.settings);
       toast.success('All settings saved successfully! Changes are now live on the storefront.');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to save settings.');
@@ -185,7 +185,8 @@ export default function AdminSettings() {
         <div className="border-b border-line pb-5 mb-5"><Toggle label="Enable Facebook Pixel" path="integrations.facebookPixel.enabled" settings={settings} onChange={handleChange} description="Tracks page views for Meta advertising." /><Field label="Pixel ID" path="integrations.facebookPixel.pixelId" settings={settings} onChange={handleChange} placeholder="123456789012345" /></div>
         <Toggle label="Enable Cloudinary uploads" path="integrations.cloudinary.enabled" settings={settings} onChange={handleChange} description="Uses the configured Cloudinary account for admin uploads." />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><Field label="Cloud name" path="integrations.cloudinary.cloudName" settings={settings} onChange={handleChange} placeholder="your-cloud-name" /><Field label="Upload preset" path="integrations.cloudinary.uploadPreset" settings={settings} onChange={handleChange} placeholder="your-upload-preset" /></div>
-        <Field label="Folder" path="integrations.cloudinary.folder" settings={settings} onChange={handleChange} placeholder="softy-ecommerce" /><p className="text-xs text-charcoal/50 mt-1">Cloudinary API key and secret remain server-only in `.env`.</p>
+        <Field label="Folder" path="integrations.cloudinary.folder" settings={settings} onChange={handleChange} placeholder="softy-ecommerce" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4"><Field label="API key" path="integrations.cloudinary.apiKey" settings={settings} onChange={handleChange} placeholder={settings.integrations?.cloudinary?.credentialsConfigured ? "Saved securely - leave blank to keep" : "Your Cloudinary API key"} /><Field label="API secret" path="integrations.cloudinary.apiSecret" settings={settings} onChange={handleChange} type="password" placeholder={settings.integrations?.cloudinary?.credentialsConfigured ? "Saved securely - leave blank to keep" : "Your Cloudinary API secret"} /></div><p className="text-xs text-charcoal/50 mt-1">Cloudinary credentials are encrypted before storage and never returned to the browser.</p>
       </Section>
       <Section title="Order confirmation email" id="email" expanded={expanded} onToggle={toggle}>
         <p className="text-xs text-charcoal/50 italic mb-5">Customer emails use the email address entered at checkout. Store forwarding sends the same message to your internal address.</p>
