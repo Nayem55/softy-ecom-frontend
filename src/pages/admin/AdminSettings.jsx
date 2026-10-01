@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { adminAPI } from './AdminLayout';
+import { adminAPI, useAdminAuth } from './AdminLayout';
 import toast from 'react-hot-toast';
 import InstructionBox from '../../components/common/InstructionBox';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -38,7 +38,12 @@ function Field({ label, path, settings, onChange, type = 'text', ...props }) {
 }
 function Toggle({ label, path, settings, onChange, description }) { const checked = !!getSettingValue(settings, path); return <label className="flex items-start gap-3 mb-4 cursor-pointer"><input type="checkbox" checked={checked} onChange={e => onChange(path, e.target.checked)} className="mt-0.5 h-4 w-4 accent-oxblood" /><span><span className="text-sm font-medium block">{label}</span>{description && <span className="text-xs text-charcoal/50 block mt-0.5">{description}</span>}</span></label>; }
 
+function MarketingSettings({ settings, onChange, onSave, saving }) {
+  return <div className="max-w-4xl"><div className="flex items-center justify-between mb-6"><div><h1 className="text-xl font-bold">Marketing Settings</h1><p className="mt-1 text-sm text-charcoal/55">Manage the storefront tracking integrations.</p></div><button onClick={onSave} disabled={saving} className="bg-oxblood text-white px-6 py-2.5 text-xs tracking-wider uppercase hover:bg-oxblood-dark disabled:opacity-50 rounded">{saving ? 'Saving...' : 'Save Settings'}</button></div><Section title="Google Analytics" id="analytics" expanded={{ analytics: true }} onToggle={() => {}}><Toggle label="Enable Google Analytics" path="integrations.googleAnalytics.enabled" settings={settings} onChange={onChange} description="Tracks storefront visits and route changes." /><Field label="Measurement ID" path="integrations.googleAnalytics.measurementId" settings={settings} onChange={onChange} placeholder="G-XXXXXXXXXX" /></Section><Section title="Facebook Pixel" id="facebook" expanded={{ facebook: true }} onToggle={() => {}}><Toggle label="Enable Facebook Pixel" path="integrations.facebookPixel.enabled" settings={settings} onChange={onChange} description="Tracks page views for Meta advertising." /><Field label="Pixel ID" path="integrations.facebookPixel.pixelId" settings={settings} onChange={onChange} placeholder="123456789012345" /></Section></div>;
+}
+
 export default function AdminSettings() {
+  const { admin } = useAdminAuth();
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -111,6 +116,7 @@ export default function AdminSettings() {
   };
 
   if (loading) return <LoadingSpinner text="Loading settings..." />;
+  if (admin?.role === 'ad_manager') return <MarketingSettings settings={settings} onChange={handleChange} onSave={handleSave} saving={saving} />;
 
   return (
     <div className="max-w-4xl">

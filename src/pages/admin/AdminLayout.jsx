@@ -95,6 +95,11 @@ const menuItems = [
     icon: "M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v11.452c0 .54-.384 1.006-.917 1.096A48.341 48.341 0 0112 18c-2.755 0-5.455-.232-8.083-.678A1.098 1.098 0 013 16.226V4.774c0-.54.384-1.006.917-1.096A48.341 48.341 0 0112 3z M7 7h10M7 11h4m1 10l-3-3h6l-3 3z",
   },
   {
+    label: "Staff Access",
+    path: "/admin/staff",
+    icon: "M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2m18 0v-2a4 4 0 00-3-3.87m-4-11.13a4 4 0 010 7.75M8 3.13a4 4 0 000 7.75",
+  },
+  {
     label: "Settings",
     path: "/admin/settings",
     icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
@@ -104,7 +109,13 @@ const menuItems = [
 /* ------------------------------------------------------------------ */
 /*  Sidebar                                                            */
 /* ------------------------------------------------------------------ */
-function Sidebar({ open, onClose }) {
+const roleAllows = (role, path) => {
+  if (role === 'admin') return true;
+  if (role === 'ad_manager') return path === '/admin/settings';
+  return ['/admin', '/admin/products', '/admin/categories', '/admin/orders', '/admin/brands'].some((allowed) => path === allowed || path.startsWith(`${allowed}/`));
+};
+
+function Sidebar({ open, onClose, role }) {
   const location = useLocation();
 
   return (
@@ -138,7 +149,7 @@ function Sidebar({ open, onClose }) {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1 scrollbar-thin">
-          {menuItems.map((item) => {
+          {menuItems.filter((item) => roleAllows(role, item.path)).map((item) => {
             const isActive = item.exact
               ? location.pathname === item.path
               : location.pathname.startsWith(item.path);
@@ -194,7 +205,7 @@ function Sidebar({ open, onClose }) {
 /* ------------------------------------------------------------------ */
 /*  Topbar                                                             */
 /* ------------------------------------------------------------------ */
-function Topbar({ adminName, onMenuToggle, onLogout, onChangePassword }) {
+function Topbar({ adminName, adminRole, onMenuToggle, onLogout, onChangePassword }) {
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-line px-4 md:px-8 py-3 flex items-center justify-between">
       {/* Left: hamburger + page hint */}
@@ -239,6 +250,7 @@ function Topbar({ adminName, onMenuToggle, onLogout, onChangePassword }) {
           <span className="text-sm font-semibold text-charcoal hidden sm:inline">
             {adminName || "Admin"}
           </span>
+          <span className="hidden md:inline text-[10px] uppercase tracking-wider text-charcoal/45">{String(adminRole || 'admin').replace('_', ' ')}</span>
         </div>
 
         <button
@@ -436,11 +448,16 @@ export default function AdminLayout() {
       .finally(() => setAuthLoading(false));
   }, [navigate]);
 
+  useEffect(() => {
+    if (!admin || roleAllows(admin.role || 'admin', location.pathname)) return;
+    navigate(admin.role === 'ad_manager' ? '/admin/settings' : '/admin');
+  }, [admin, location.pathname, navigate]);
+
   const handleLogout = () => {
     localStorage.removeItem("softy_admin_token");
     navigate("/admin/login");
   };
-  const currentMenuItem = [...menuItems]
+  const currentMenuItem = menuItems.filter((item) => roleAllows(admin?.role || 'admin', item.path))
     .sort((a, b) => b.path.length - a.path.length)
     .find((item) => location.pathname === item.path || (!item.exact && location.pathname.startsWith(`${item.path}/`)));
   const adminTitle = currentMenuItem?.label || "Admin Panel";
@@ -466,12 +483,13 @@ export default function AdminLayout() {
       />
       <div className="admin-shell min-h-screen bg-ivory">
         {/* Sidebar */}
-        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} role={admin?.role || 'admin'} />
 
         {/* Main content area */}
         <div className="flex min-h-screen flex-col lg:ml-64">
           <Topbar
             adminName={admin?.name || admin?.email?.split("@")[0] || "Admin"}
+            adminRole={admin?.role || 'admin'}
             onMenuToggle={() => setSidebarOpen((p) => !p)}
             onLogout={handleLogout}
             onChangePassword={() => setPwModal(true)}

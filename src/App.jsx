@@ -41,6 +41,7 @@ import AdminNewsletter from './pages/admin/AdminNewsletter';
 import AdminPages from './pages/admin/AdminPages';
 import AdminReviews from './pages/admin/AdminReviews';
 import AdminMessages from './pages/admin/AdminMessages';
+import AdminStaff from './pages/admin/AdminStaff';
 
 const LoadingScreen = () => (
   <div className="min-h-screen flex items-center justify-center bg-ivory">
@@ -91,6 +92,7 @@ export default function App() {
           <Route path="pages" element={<AdminPages />} />
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="messages" element={<AdminMessages />} />
+          <Route path="staff" element={<AdminStaff />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="*" element={
