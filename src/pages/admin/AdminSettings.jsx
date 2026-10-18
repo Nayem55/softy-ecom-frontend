@@ -152,6 +152,7 @@ export default function AdminSettings() {
               {uploading === 'logo' ? 'Uploading...' : 'Upload Logo'}
               <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload('logo', e.target.files[0])} />
             </label>
+            <input value={settings.logo || ''} onChange={e => handleChange('logo', e.target.value)} placeholder="Or paste logo image URL: https://..." className="w-full mt-2 border border-line px-3 py-2 text-sm focus:border-oxblood focus:outline-none" />
           </div>
           <div>
             <label className="text-xs uppercase tracking-wider text-charcoal/60 block mb-1.5">Favicon</label>
@@ -160,6 +161,7 @@ export default function AdminSettings() {
               {uploading === 'favicon' ? 'Uploading...' : 'Upload Favicon'}
               <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload('favicon', e.target.files[0])} />
             </label>
+            <input value={settings.favicon || ''} onChange={e => handleChange('favicon', e.target.value)} placeholder="Or paste favicon image URL: https://..." className="w-full mt-2 border border-line px-3 py-2 text-sm focus:border-oxblood focus:outline-none" />
           </div>
         </div>
       </Section>

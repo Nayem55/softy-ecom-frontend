@@ -21,6 +21,7 @@ const ProductForm = () => {
   const [subcategories, setSubcategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [imageUploading, setImageUploading] = useState(false);
+  const [imageUrlInput, setImageUrlInput] = useState('');
   const [validationErrors, setValidationErrors] = useState({});
   const [isDirty, setIsDirty] = useState(false);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
@@ -385,6 +386,16 @@ const ProductForm = () => {
       ...prev,
       images: prev.images.filter((_, i) => i !== index),
     }));
+    markDirty();
+  };
+
+  const handleAddImageUrl = () => {
+    const imageUrl = imageUrlInput.trim();
+    if (!/^https?:\/\//i.test(imageUrl)) { toast.error('Enter a valid image URL starting with http:// or https://'); return; }
+    if (formData.images.length >= 6) { toast.error('Maximum 6 images allowed'); return; }
+    if (formData.images.includes(imageUrl)) { toast.error('This image link has already been added'); return; }
+    setFormData((prev) => ({ ...prev, images: [...prev.images, imageUrl] }));
+    setImageUrlInput('');
     markDirty();
   };
 
@@ -1028,7 +1039,8 @@ const ProductForm = () => {
         {/* Images */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h2>
-          <p className="text-sm text-gray-500 mb-4">Upload up to 6 images. First image will be the main image.</p>
+          <p className="text-sm text-gray-500 mb-4">Upload or add up to 6 image links. The first image will be the main image.</p>
+          <div className="flex flex-col sm:flex-row gap-2 mb-4"><input value={imageUrlInput} onChange={(e) => setImageUrlInput(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddImageUrl(); } }} placeholder="https://example.com/product-image.jpg" className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500" /><button type="button" onClick={handleAddImageUrl} className="px-4 py-2 text-sm font-semibold text-rose-600 bg-rose-50 rounded-lg hover:bg-rose-100">Add image link</button></div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {formData.images.map((imageUrl, index) => (

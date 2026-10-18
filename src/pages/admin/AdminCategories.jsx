@@ -488,6 +488,7 @@ const AdminCategories = () => {
                     <p className="text-xs text-gray-400 mt-1">JPG, PNG up to 2MB</p>
                   </div>
                 </div>
+                <input type="url" value={catForm.image && typeof catForm.image === 'string' ? catForm.image : catForm.imagePreview} onChange={(e) => setCatForm((p) => ({ ...p, image: null, imagePreview: e.target.value }))} placeholder="Or paste an image link: https://..." className="w-full mt-3 px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500" />
               </div>
               <div className="flex gap-4">
                 <div className="flex-1">

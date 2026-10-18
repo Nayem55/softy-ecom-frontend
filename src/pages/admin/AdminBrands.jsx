@@ -152,6 +152,7 @@ const BrandForm = ({ initial, onSubmit, onCancel, loading }) => {
               <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 6 }}>Square image recommended. PNG/SVG preferred.</p>
             </div>
           </div>
+          <input value={form.logo || ''} onChange={(e) => { setForm((prev) => ({ ...prev, logo: e.target.value })); setLogoFile(null); setPreview(e.target.value); }} style={{ ...inputStyle, marginTop: 10 }} placeholder="Or paste logo image URL: https://..." />
         </div>
 
         {/* Name */}

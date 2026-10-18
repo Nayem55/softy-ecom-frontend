@@ -133,6 +133,11 @@ const BannerForm = ({ initial, onSubmit, onCancel, loading }) => {
     reader.readAsDataURL(file);
   };
 
+  const handleImageLink = (value, target = 'desktop') => {
+    if (target === 'mobile') { setMobileImageFile(null); setMobilePreview(value); setForm((prev) => ({ ...prev, mobileImage: value })); }
+    else { setImageFile(null); setPreview(value); setForm((prev) => ({ ...prev, image: value })); }
+  };
+
   const uploadImage = async (file) => {
     const fd = new FormData();
     fd.append('file', file);
@@ -192,6 +197,7 @@ const BannerForm = ({ initial, onSubmit, onCancel, loading }) => {
                 Choose Image
               </button>
               <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 6 }}>Recommended 1920 x 820 px. JPG, PNG or WebP. Max 5 MB.</p>
+              <input value={form.image || ''} onChange={(e) => handleImageLink(e.target.value)} placeholder="Or paste desktop image URL: https://..." style={{ ...inputStyle, marginTop: 10 }} />
             </div>
           </div>
         </div>
@@ -216,6 +222,7 @@ const BannerForm = ({ initial, onSubmit, onCancel, loading }) => {
                 )}
               </div>
               <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 6 }}>Recommended 1080 x 1440 px. If empty, the desktop banner will be used on mobile.</p>
+              <input value={form.mobileImage || ''} onChange={(e) => handleImageLink(e.target.value, 'mobile')} placeholder="Or paste mobile image URL: https://..." style={{ ...inputStyle, marginTop: 10 }} />
             </div>
           </div>
         </div>
