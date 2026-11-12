@@ -3,31 +3,30 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { ArrowRight, ChevronDown, Menu, Search, ShoppingBag, UserRound, X } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import API from '../../api/axios'
-import { softyCategories, softyProducts, softySettings } from '../../data/softyCatalog'
+import { catalogItems } from '../../data/apiCatalog'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
-  const [categories, setCategories] = useState(softyCategories)
+  const [categories, setCategories] = useState([])
   const [searchOpen, setSearchOpen] = useState(false)
   const [activeSuggestion, setActiveSuggestion] = useState(-1)
-  const [settings, setSettings] = useState(softySettings)
+  const [settings, setSettings] = useState({})
   const { cartCount } = useCart()
   const location = useLocation(); const navigate = useNavigate()
   useEffect(() => {
     API.get('/settings').then(({ data }) => setSettings(s => ({ ...s, ...(data.settings || {}) }))).catch(() => {})
-    API.get('/categories').then(({ data }) => data.categories?.length && setCategories(data.categories)).catch(() => {})
+    API.get('/categories').then(({ data }) => setCategories(catalogItems(data, 'categories') || [])).catch(() => {})
   }, [])
   useEffect(() => {
     const value = query.trim()
     setActiveSuggestion(-1)
     if (value.length < 2) { setSuggestions([]); return undefined }
-    const fallback = softyProducts.filter(product => `${product.name} ${product.description} ${(product.tags || []).join(' ')}`.toLowerCase().includes(value.toLowerCase())).slice(0, 4)
     const timer = setTimeout(() => {
       API.get(`/products?search=${encodeURIComponent(value)}&limit=4`)
-        .then(({ data }) => setSuggestions(data.products?.length ? data.products.slice(0, 4) : fallback))
-        .catch(() => setSuggestions(fallback))
+        .then(({ data }) => setSuggestions((catalogItems(data, 'products') || []).slice(0, 4)))
+        .catch(() => setSuggestions([]))
     }, 180)
     return () => clearTimeout(timer)
   }, [query])

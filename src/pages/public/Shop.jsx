@@ -3,12 +3,19 @@ import { useSearchParams } from 'react-router-dom'
 import API from '../../api/axios'
 import ProductCard from '../../components/common/ProductCard'
 import SEO from '../../components/common/SEO'
-import { softyCategories, softyProducts } from '../../data/softyCatalog'
+import { catalogItems } from '../../data/apiCatalog'
 
 export default function Shop() {
-  const [params, setParams] = useSearchParams(); const [products, setProducts] = useState(softyProducts); const [categories, setCategories] = useState(softyCategories); const [offline, setOffline] = useState(false)
+  const [params, setParams] = useSearchParams(); const [products, setProducts] = useState([]); const [categories, setCategories] = useState([]); const [status, setStatus] = useState('loading')
   const selected = params.get('category') || ''; const query = params.get('search') || ''; const best = params.get('isBestSeller') === 'true'
-  useEffect(() => { API.get('/products?limit=100').then(({data}) => { setProducts(data.products || []); setOffline(false) }).catch(() => setOffline(true)); API.get('/categories').then(({data}) => data.categories?.length && setCategories(data.categories)).catch(() => {}) }, [])
+  useEffect(() => {
+    API.get('/products?limit=100')
+      .then(({ data }) => { const items = catalogItems(data, 'products'); if (!items) throw new Error('Invalid product response'); setProducts(items); setStatus('ready') })
+      .catch(() => setStatus('error'))
+    API.get('/categories')
+      .then(({ data }) => setCategories(catalogItems(data, 'categories') || []))
+      .catch(() => {})
+  }, [])
   const selectedCategory = useMemo(() => categories.find((category) => category.slug === selected || String(category._id) === selected), [categories, selected])
   const display = useMemo(() => {
     const selectedKeys = new Set([selected, selectedCategory?.slug, selectedCategory?._id?.toString()].filter(Boolean))
@@ -22,6 +29,11 @@ export default function Shop() {
     }
     return products.filter((product) => matchesCategory(product) && (!best || product.isBestSeller) && (!query || `${product.name} ${product.description} ${(product.concerns || []).join(' ')}`.toLowerCase().includes(query.toLowerCase())))
   }, [products, selected, selectedCategory, best, query])
-  const choose = slug => { const next = new URLSearchParams(params); slug ? next.set('category',slug) : next.delete('category'); setParams(next) }
-  return <><SEO title="Shop skincare"/><section className="softy-shop-hero"><div className="softy-shell"><span className="softy-eyebrow">Softy skincare</span><h1>Everyday care for real life.</h1><p className="softy-note">Simple, gentle products selected around the way you care for your skin.</p></div></section><div className="softy-shell softy-shop-layout"><aside className="softy-filters"><h3>Categories</h3><button className={`softy-filter-button ${!selected?'active':''}`} onClick={() => choose('')}>All products</button>{categories.map(category => <button className={`softy-filter-button ${selected === category.slug || selected === category._id ? 'active':''}`} onClick={() => choose(category.slug || category._id)} key={category._id}>{category.name}</button>)}</aside><section>{offline && <p className="softy-error">You are viewing Softy’s local catalog while the server reconnects.</p>}<div className="softy-shop-meta"><strong>{display.length} products</strong><span className="softy-note">{query ? `Results for “${query}”` : 'Care chosen for your routine'}</span></div>{display.length ? <div className="softy-product-grid">{display.map(product => <ProductCard key={product._id} product={product}/>)}</div> : <div className="softy-empty">No products match those filters.</div>}</section></div></>
+  const choose = (slug) => {
+    const next = new URLSearchParams(params)
+    if (slug) next.set('category', slug)
+    else next.delete('category')
+    setParams(next)
+  }
+  return <><SEO title="Shop skincare"/><section className="softy-shop-hero"><div className="softy-shell"><span className="softy-eyebrow">Softy skincare</span><h1>Everyday care for real life.</h1><p className="softy-note">Simple, gentle products selected around the way you care for your skin.</p></div></section><div className="softy-shell softy-shop-layout"><aside className="softy-filters"><h3>Categories</h3><button className={`softy-filter-button ${!selected?'active':''}`} onClick={() => choose('')}>All products</button>{categories.map(category => <button className={`softy-filter-button ${selected === category.slug || selected === category._id ? 'active':''}`} onClick={() => choose(category.slug || category._id)} key={category._id}>{category.name}</button>)}</aside><section>{status === 'loading' ? <p className="softy-note">Loading the latest collection…</p> : status === 'error' ? <div className="softy-empty"><strong>We can’t load products right now.</strong><p>Please refresh the page and try again.</p></div> : <><div className="softy-shop-meta"><strong>{display.length} products</strong><span className="softy-note">{query ? `Results for “${query}”` : 'Care chosen for your routine'}</span></div>{display.length ? <div className="softy-product-grid">{display.map(product => <ProductCard key={product._id} product={product}/>)}</div> : <div className="softy-empty">No products match those filters.</div>}</>}</section></div></>
 }

@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CheckCircle2, Mail, MapPin, Phone } from 'lucide-react'
 import API from '../../api/axios'
 import SEO from '../../components/common/SEO'
-import { softySettings } from '../../data/softyCatalog'
 
 const pages = {
   about: { eyebrow: 'About Softy', title: 'Everyday care, made gentle.', body: 'Softy creates straightforward skincare for real routines. Our formulas are chosen to help customers care for their skin with comfort, confidence, and consistency.', points: ['Thoughtful everyday formulas', 'Original products you can trust', 'A local team that stays reachable'] },
@@ -12,9 +11,23 @@ const pages = {
 }
 
 function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' }); const [state, setState] = useState('idle')
-  const submit = async (event) => { event.preventDefault(); setState('sending'); try { await API.post('/contact', form); setState('sent'); setForm({ name: '', email: '', phone: '', subject: '', message: '' }) } catch { setState('error') } }
-  return <section className="softy-info"><SEO title="Contact" description="Contact Softy customer care in Bangladesh." /><div className="softy-shell softy-info-grid"><div><span className="softy-eyebrow">Customer care</span><h1>We are here when you need us.</h1><p>For product questions, order support, or partnership enquiries, send a note and our team will get back to you.</p><div className="softy-contact-details"><a href={`mailto:${softySettings.contact.email}`}><Mail size={18}/>{softySettings.contact.email}</a><a href="tel:01911238421"><Phone size={18}/>{softySettings.contact.phone}</a><span><MapPin size={18}/>{softySettings.contact.address}</span></div></div><form onSubmit={submit} className="softy-contact-form"><label>Name<input required value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/></label><label>Email<input required type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label><label>Phone<input required value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})}/></label><label>Subject<input required value={form.subject} onChange={e=>setForm({...form,subject:e.target.value})}/></label><label className="softy-form-full">Message<textarea required rows="5" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/></label>{state==='sent'&&<p className="softy-form-success">Thank you. Your message is with the Softy team.</p>}{state==='error'&&<p className="softy-form-error">We could not send that message. Please try again shortly.</p>}<button className="softy-button softy-form-full" disabled={state==='sending'}>{state==='sending' ? 'Sending...' : 'Send message'}</button></form></div></section>
+  const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' })
+  const [state, setState] = useState('idle')
+  const [contact, setContact] = useState(null)
+
+  useEffect(() => { API.get('/settings').then(({ data }) => setContact(data.settings?.contact || null)).catch(() => setContact(null)) }, [])
+
+  const submit = async (event) => {
+    event.preventDefault()
+    setState('sending')
+    try {
+      await API.post('/contact', form)
+      setState('sent')
+      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+    } catch { setState('error') }
+  }
+
+  return <section className="softy-info"><SEO title="Contact" description="Contact Softy customer care in Bangladesh." /><div className="softy-shell softy-info-grid"><div><span className="softy-eyebrow">Customer care</span><h1>We are here when you need us.</h1><p>For product questions, order support, or partnership enquiries, send a note and our team will get back to you.</p>{contact ? <div className="softy-contact-details">{contact.email && <a href={`mailto:${contact.email}`}><Mail size={18}/>{contact.email}</a>}{contact.phone && <a href={`tel:${contact.phone.replace(/\D/g, '')}`}><Phone size={18}/>{contact.phone}</a>}{contact.address && <span><MapPin size={18}/>{contact.address}</span>}</div> : <p className="softy-note">Contact details are loading from Softy.</p>}</div><form onSubmit={submit} className="softy-contact-form"><label>Name<input required value={form.name} onChange={e=>setForm({...form,name:e.target.value})}/></label><label>Email<input required type="email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})}/></label><label>Phone<input required value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})}/></label><label>Subject<input required value={form.subject} onChange={e=>setForm({...form,subject:e.target.value})}/></label><label className="softy-form-full">Message<textarea required rows="5" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/></label>{state==='sent'&&<p className="softy-form-success">Thank you. Your message is with the Softy team.</p>}{state==='error'&&<p className="softy-form-error">We could not send that message. Please try again shortly.</p>}<button className="softy-button softy-form-full" disabled={state==='sending'}>{state==='sending' ? 'Sending...' : 'Send message'}</button></form></div></section>
 }
 
 export default function SoftyInfoPage({ page }) {
