@@ -7,7 +7,7 @@ import { catalogItems } from '../../data/apiCatalog'
 
 export default function Shop() {
   const [params, setParams] = useSearchParams(); const [products, setProducts] = useState([]); const [categories, setCategories] = useState([]); const [status, setStatus] = useState('loading')
-  const selected = params.get('category') || ''; const query = params.get('search') || ''; const best = params.get('isBestSeller') === 'true'
+  const selected = params.get('category') || ''; const selectedBrand = params.get('brand') || ''; const query = params.get('search') || ''; const best = params.get('isBestSeller') === 'true'
   useEffect(() => {
     API.get('/products?limit=100')
       .then(({ data }) => { const items = catalogItems(data, 'products'); if (!items) throw new Error('Invalid product response'); setProducts(items); setStatus('ready') })
@@ -27,8 +27,9 @@ export default function Shop() {
         .map(String)
       return productKeys.some((key) => selectedKeys.has(key))
     }
-    return products.filter((product) => matchesCategory(product) && (!best || product.isBestSeller) && (!query || `${product.name} ${product.description} ${(product.concerns || []).join(' ')}`.toLowerCase().includes(query.toLowerCase())))
-  }, [products, selected, selectedCategory, best, query])
+    const matchesBrand = (product) => !selectedBrand || [product.brand?._id, product.brand?.slug, product.brand].filter(Boolean).map(String).includes(selectedBrand)
+    return products.filter((product) => matchesCategory(product) && matchesBrand(product) && (!best || product.isBestSeller) && (!query || `${product.name} ${product.description} ${(product.concerns || []).join(' ')}`.toLowerCase().includes(query.toLowerCase())))
+  }, [products, selected, selectedBrand, selectedCategory, best, query])
   const choose = (slug) => {
     const next = new URLSearchParams(params)
     if (slug) next.set('category', slug)

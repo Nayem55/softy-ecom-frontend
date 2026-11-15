@@ -10,6 +10,7 @@ export default function Navbar() {
   const [query, setQuery] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
   const [searchOpen, setSearchOpen] = useState(false)
   const [activeSuggestion, setActiveSuggestion] = useState(-1)
   const [settings, setSettings] = useState({})
@@ -18,6 +19,7 @@ export default function Navbar() {
   useEffect(() => {
     API.get('/settings').then(({ data }) => setSettings(s => ({ ...s, ...(data.settings || {}) }))).catch(() => {})
     API.get('/categories').then(({ data }) => setCategories(catalogItems(data, 'categories') || [])).catch(() => {})
+    API.get('/brands').then(({ data }) => setBrands(catalogItems(data, 'brands') || [])).catch(() => {})
   }, [])
   useEffect(() => {
     const value = query.trim()
@@ -45,8 +47,9 @@ export default function Navbar() {
     if (event.key === 'Escape') setSearchOpen(false)
     if (event.key === 'Enter' && activeSuggestion >= 0) { event.preventDefault(); chooseSuggestion(resultItems[activeSuggestion]); }
   }
-  const links = [['Best Sellers', '/shop?isBestSeller=true'], ['About', '/about'], ['Contact', '/contact']]
+  const links = [['Best Sellers', '/shop?isBestSeller=true'], ['Journal', '/blog'], ['About', '/about'], ['Contact', '/contact']]
   const navCategories = categories.filter(category => category.isActive !== false).slice(0, 9)
+  const navBrands = brands.filter(brand => brand.isActive !== false).slice(0, 9)
   return <>
     <div className="softy-announcement">{settings.announcementText}</div>
     <header className="softy-header"><div className="softy-header-inner">
@@ -60,6 +63,11 @@ export default function Navbar() {
             <div className="softy-category-menu-grid">{navCategories.map(category => <Link key={category._id || category.slug} to={`/shop?category=${encodeURIComponent(category.slug || category._id)}`}><img src={category.image} alt=""/><span>{category.name}</span><ArrowRight size={14}/></Link>)}</div>
           </div>
         </div>
+        {settings.headerBrandMenu?.enabled !== false && navBrands.length > 0 && <div className="softy-nav-group">
+          <Link className={location.search.includes('brand=') ? 'active' : ''} to="/shop">{settings.headerBrandMenu?.label || 'Brands'}</Link>
+          <button className="softy-nav-toggle" type="button" aria-label="Browse brands"><ChevronDown size={15}/></button>
+          <div className="softy-category-menu"><div className="softy-category-menu-head"><span>Shop by brand</span><Link to="/shop">All products <ArrowRight size={14}/></Link></div><div className="softy-category-menu-grid">{navBrands.map(brand => <Link key={brand._id || brand.slug} to={`/shop?brand=${encodeURIComponent(brand.slug || brand._id)}`}><img src={brand.logo} alt=""/><span>{brand.name}</span><ArrowRight size={14}/></Link>)}</div></div>
+        </div>}
         {links.map(([label, href]) => <Link className={location.pathname === href.split('?')[0] ? 'active' : ''} key={label} to={href}>{label}</Link>)}
       </nav>
       <div className="softy-search-wrap">
@@ -75,6 +83,6 @@ export default function Navbar() {
       </div>
       <div className="softy-actions"><Link to="/account" aria-label="Your account"><UserRound size={21}/></Link><Link className="softy-bag" to="/cart" aria-label={`Cart with ${cartCount} items`}><ShoppingBag size={21}/>{cartCount > 0 && <b>{cartCount}</b>}</Link><button className="softy-menu-button" type="button" onClick={() => setMenuOpen(true)} aria-label="Open menu"><Menu size={24}/></button></div>
     </div></header>
-    {menuOpen && <div className="softy-mobile-menu"><button onClick={() => setMenuOpen(false)} aria-label="Close menu"><X/></button><Link to="/shop" onClick={() => setMenuOpen(false)}>Shop all</Link><div className="softy-mobile-category-links">{navCategories.map(category => <Link key={category._id || category.slug} to={`/shop?category=${encodeURIComponent(category.slug || category._id)}`} onClick={() => setMenuOpen(false)}>{category.name}<ArrowRight size={17}/></Link>)}</div>{links.map(([label, href]) => <Link key={label} to={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}<Link to="/track-order" onClick={() => setMenuOpen(false)}>Track order</Link></div>}
+    {menuOpen && <div className="softy-mobile-menu"><button onClick={() => setMenuOpen(false)} aria-label="Close menu"><X/></button><Link to="/shop" onClick={() => setMenuOpen(false)}>Shop all</Link><div className="softy-mobile-category-links">{navCategories.map(category => <Link key={category._id || category.slug} to={`/shop?category=${encodeURIComponent(category.slug || category._id)}`} onClick={() => setMenuOpen(false)}>{category.name}<ArrowRight size={17}/></Link>)}{navBrands.map(brand => <Link key={brand._id || brand.slug} to={`/shop?brand=${encodeURIComponent(brand.slug || brand._id)}`} onClick={() => setMenuOpen(false)}>{brand.name}<ArrowRight size={17}/></Link>)}</div>{links.map(([label, href]) => <Link key={label} to={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}<Link to="/blog" onClick={() => setMenuOpen(false)}>Journal</Link><Link to="/track-order" onClick={() => setMenuOpen(false)}>Track order</Link></div>}
   </>
 }

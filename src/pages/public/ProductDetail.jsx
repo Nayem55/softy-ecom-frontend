@@ -386,6 +386,12 @@ export default function ProductDetail() {
 
             <div className="softy-detail-summary">
               <p>{shortDescription}</p>
+              {product.barcode && (
+                <div className="mt-4 border border-charcoal/15 bg-white px-4 py-3 rounded-lg">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal/55 mb-1">Barcode</p>
+                  <p className="text-sm font-medium text-charcoal">{product.barcode}</p>
+                </div>
+              )}
               {benefits.length > 0 && (
                 <div className="softy-detail-benefits" aria-label="Product benefits">
                   {benefits.map((benefit) => (

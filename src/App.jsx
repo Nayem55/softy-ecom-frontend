@@ -42,6 +42,9 @@ import AdminPages from './pages/admin/AdminPages';
 import AdminReviews from './pages/admin/AdminReviews';
 import AdminMessages from './pages/admin/AdminMessages';
 import AdminStaff from './pages/admin/AdminStaff';
+import AdminBlogs from './pages/admin/AdminBlogs';
+import Blog from './pages/public/Blog';
+import BlogPost from './pages/public/BlogPost';
 
 const LoadingScreen = () => (
   <div className="min-h-screen flex items-center justify-center bg-ivory">
@@ -90,6 +93,7 @@ export default function App() {
           <Route path="settings" element={<AdminSettings />} />
           <Route path="newsletter" element={<AdminNewsletter />} />
           <Route path="pages" element={<AdminPages />} />
+          <Route path="blogs" element={<AdminBlogs />} />
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="messages" element={<AdminMessages />} />
           <Route path="staff" element={<AdminStaff />} />
@@ -112,6 +116,8 @@ export default function App() {
                 <Route path="/track-order" element={<TrackOrder />} />
                 <Route path="/about" element={<SoftyInfoPage page="about" />} />
                 <Route path="/contact" element={<SoftyInfoPage page="contact" />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPost />} />
                 <Route path="/shipping-policy" element={<SoftyInfoPage page="shipping-policy" />} />
                 <Route path="/return-policy" element={<SoftyInfoPage page="return-policy" />} />
                 <Route path="/:slug" element={<StaticPage />} />

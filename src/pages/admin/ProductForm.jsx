@@ -33,6 +33,7 @@ const ProductForm = () => {
     description: '',
     shortDescription: '',
     additionalNote: '',
+    barcode: '',
     regularPrice: '',
     salePrice: '',
     isOnSale: false,
@@ -192,6 +193,7 @@ const ProductForm = () => {
         description: product.description || '',
         shortDescription: product.shortDescription || '',
         additionalNote: product.additionalNote || '',
+        barcode: product.barcode || '',
         regularPrice,
         salePrice,
         isOnSale: Boolean(product.isOnSale || (product.comparePrice && product.price < product.comparePrice)),
@@ -574,6 +576,11 @@ const ProductForm = () => {
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Barcode</label>
+              <input name="barcode" value={formData.barcode} onChange={handleChange} maxLength={120} placeholder="e.g. 120154021454" className="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent" />
+              <p className="mt-1 text-xs text-gray-500">Shown separately on the product detail page.</p>
+            </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Product Name <span className="text-rose-500">*</span>
