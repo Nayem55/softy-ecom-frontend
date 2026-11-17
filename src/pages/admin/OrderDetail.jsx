@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAdminAuth, adminAPI } from './AdminLayout';
 import toast from 'react-hot-toast';
 import PageHeader from '../../components/common/PageHeader';
 import InstructionBox from '../../components/common/InstructionBox';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import ErrorDisplay from '../../components/common/ErrorDisplay';
+import { printOrderInvoice } from '../../utils/orderInvoice';
 
 const STATUS_FLOW = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
 const ALL_STATUSES = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
@@ -46,6 +47,7 @@ const formatPrice = (n) => `BDT ${Number(n || 0).toLocaleString('en-BD')}`;
 
 const OrderDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAdminAuth();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -113,6 +115,10 @@ const OrderDetail = () => {
       setDeleting(false);
       setShowDeleteConfirm(false);
     }
+  };
+
+  const handlePrintInvoice = () => {
+    if (!printOrderInvoice(order)) toast.error('Please allow pop-ups to print the invoice');
   };
 
   if (loading) {
@@ -187,8 +193,15 @@ const OrderDetail = () => {
         actions={
           <div className="flex items-center gap-2">
             <button
+              onClick={handlePrintInvoice}
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.7} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 9V2.25h10.5V9M6.75 18.75H5.25A2.25 2.25 0 013 16.5v-5.25A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v5.25a2.25 2.25 0 01-2.25 2.25h-1.5M6.75 14.25h10.5v7.5H6.75v-7.5z" /></svg>
+              Print invoice
+            </button>
+            <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-rose-700 bg-rose-50 border border-rose-200 rounded-lg hover:bg-rose-100 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-rose-600 border border-rose-700 rounded-lg hover:bg-rose-700 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />

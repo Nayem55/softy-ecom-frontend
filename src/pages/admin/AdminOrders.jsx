@@ -7,6 +7,7 @@ import InstructionBox from '../../components/common/InstructionBox';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import ErrorDisplay from '../../components/common/ErrorDisplay';
+import { openInvoiceWindow, printOrderInvoice } from '../../utils/orderInvoice';
 
 const STATUS_TABS = [
   { key: '', label: 'All' },
@@ -134,6 +135,19 @@ const AdminOrders = () => {
   };
 
   const hasActiveFilters = search || statusFilter;
+
+  const handlePrintInvoice = async (orderId) => {
+    const printWindow = openInvoiceWindow();
+    if (!printWindow) { toast.error('Please allow pop-ups to print the invoice'); return; }
+    try {
+      printWindow.document.write('<title>Preparing invoice…</title><p style="font-family:Arial;padding:24px">Preparing invoice…</p>');
+      const response = await adminAPI.get(`/admin/orders/${orderId}`);
+      printOrderInvoice(response.data.order || response.data, printWindow);
+    } catch (err) {
+      printWindow.close();
+      toast.error(err.response?.data?.message || 'Could not prepare the invoice');
+    }
+  };
 
   const handleDelete = async () => {
     if (!deleteConfirm) return;
@@ -352,9 +366,17 @@ const AdminOrders = () => {
                               </svg>
                             </Link>
                             <button
+                              onClick={() => handlePrintInvoice(order._id)}
+                              className="p-2 text-gray-500 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors"
+                              title="Print invoice / Save as PDF"
+                              aria-label="Print invoice"
+                            >
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.7} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 9V2.25h10.5V9M6.75 18.75H5.25A2.25 2.25 0 013 16.5v-5.25A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v5.25a2.25 2.25 0 01-2.25 2.25h-1.5M6.75 14.25h10.5v7.5H6.75v-7.5z" /></svg>
+                            </button>
+                            <button
                               onClick={() => setDeleteConfirm(order._id)}
                               disabled={updatingId === order._id}
-                              className="p-2 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors disabled:opacity-50"
+                              className="p-2 text-rose-600 bg-rose-50 border border-rose-200 hover:text-white hover:bg-rose-600 hover:border-rose-600 rounded-lg transition-colors disabled:opacity-50"
                               title="Delete Order"
                             >
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
