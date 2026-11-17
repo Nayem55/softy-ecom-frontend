@@ -91,7 +91,7 @@ export default function AdminLogin() {
         <div
           className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-lg shadow-lg text-sm font-medium tracking-wide transition-all duration-300 ${
             toast.type === 'success'
-              ? 'bg-green-600 text-white'
+              ? 'bg-green-700 text-white'
               : 'bg-oxblood text-ivory'
           }`}
         >

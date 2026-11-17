@@ -185,7 +185,7 @@ export default function AdminReviews() {
         <button
           onClick={() => setFilter('pending')}
           className={`px-5 py-2 text-sm font-medium rounded-lg transition-colors ${
-            filter === 'pending' ? 'bg-amber-500 text-white' : 'text-gray-600 hover:bg-gray-100'
+            filter === 'pending' ? 'bg-amber-700 text-white' : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
           Pending ({pendingCount})
@@ -193,7 +193,7 @@ export default function AdminReviews() {
         <button
           onClick={() => setFilter('approved')}
           className={`px-5 py-2 text-sm font-medium rounded-lg transition-colors ${
-            filter === 'approved' ? 'bg-emerald-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+            filter === 'approved' ? 'bg-emerald-700 text-white' : 'text-gray-600 hover:bg-gray-100'
           }`}
         >
           Approved ({approvedCount})
@@ -259,7 +259,7 @@ export default function AdminReviews() {
                   {!review.isApproved && (
                     <button
                       onClick={() => handleApprove(review)}
-                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-lg transition-colors"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium rounded-lg transition-colors"
                       title="Approve"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
