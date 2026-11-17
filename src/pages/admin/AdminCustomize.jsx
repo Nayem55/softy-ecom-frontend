@@ -11,7 +11,6 @@ const PRESET_LINKS = [
   { label: 'New Arrivals', url: '/shop?isNew=true' },
   { label: 'Trending', url: '/shop?isTrending=true' },
   { label: 'Best Sellers', url: '/shop?isBestSeller=true' },
-  { label: 'Bridal', url: '/shop?isBridal=true', accent: true },
 ];
 
 const tabs = [

@@ -45,13 +45,11 @@ const ProductForm = () => {
     categoryRows: [{ category: '', subcategory: '' }],
     brand: '',
     sizes: [],
-    colors: [],
     tags: '',
     isTrending: false,
     isFeatured: false,
     isBestSeller: false,
     isNew: false,
-    isBridal: false,
     images: [],
     stitchVariations: [],
   });
@@ -60,27 +58,6 @@ const ProductForm = () => {
     'XS', 'S', 'M', 'L', 'XL', 'XXL',
     '28', '30', '32', '34', '36', '38', '40',
     'Free Size', 'One Size',
-  ];
-
-  const availableColors = [
-    { name: 'Black', hex: '#000000' },
-    { name: 'White', hex: '#FFFFFF' },
-    { name: 'Red', hex: '#DC2626' },
-    { name: 'Blue', hex: '#2563EB' },
-    { name: 'Navy', hex: '#1E3A5F' },
-    { name: 'Green', hex: '#16A34A' },
-    { name: 'Yellow', hex: '#EAB308' },
-    { name: 'Pink', hex: '#EC4899' },
-    { name: 'Purple', hex: '#9333EA' },
-    { name: 'Orange', hex: '#EA580C' },
-    { name: 'Brown', hex: '#92400E' },
-    { name: 'Grey', hex: '#6B7280' },
-    { name: 'Maroon', hex: '#881337' },
-    { name: 'Teal', hex: '#0D9488' },
-    { name: 'Beige', hex: '#D4C5A9' },
-    { name: 'Cream', hex: '#FFFDD0' },
-    { name: 'Gold', hex: '#FFD700' },
-    { name: 'Silver', hex: '#C0C0C0' },
   ];
 
   const getId = (value) => (typeof value === 'object' ? value?._id || value?.id || '' : value || '');
@@ -201,13 +178,11 @@ const ProductForm = () => {
         ...syncCategoryRows(categoryRows),
         brand: product.brand?._id || product.brand || '',
         sizes: product.sizes || [],
-        colors: product.colors || [],
         tags: Array.isArray(product.tags) ? product.tags.join(', ') : (product.tags || ''),
         isTrending: product.isTrending || false,
         isFeatured: product.isFeatured || false,
         isBestSeller: product.isBestSeller || false,
         isNew: product.isNew || false,
-        isBridal: product.isBridal || false,
         images: product.images || [],
         stitchVariations: (product.stitchVariations || []).map((variation) => ({
           ...variation,
@@ -302,16 +277,6 @@ const ProductForm = () => {
       sizes: prev.sizes.includes(size)
         ? prev.sizes.filter((s) => s !== size)
         : [...prev.sizes, size],
-    }));
-    markDirty();
-  };
-
-  const handleColorToggle = (colorName) => {
-    setFormData((prev) => ({
-      ...prev,
-      colors: prev.colors.includes(colorName)
-        ? prev.colors.filter((c) => c !== colorName)
-        : [...prev.colors, colorName],
     }));
     markDirty();
   };
@@ -511,10 +476,9 @@ const ProductForm = () => {
           'Product Name: Give your product a clear, descriptive name (required).',
           'Regular Price: The normal product price. Turn Sale on only when you want to show a discounted sale price.',
           'Category & Brand: Add one or more category rows. Subcategories stay linked to their parent category automatically.',
-          'Colors: Add options only where a product is genuinely available in multiple shades or fragrances.',
           'Tags: Add comma-separated keywords (e.g., summer, casual) to improve searchability.',
           'Images: Upload up to 6 images. The first image becomes the main product photo.',
-          'Product Flags: Toggle Trending, Featured, Best Seller, New Arrival, or Bridal Collection badges.',
+          'Product Flags: Toggle Trending, Featured, Best Seller, or New Arrival badges.',
         ]}
       />
 
@@ -733,7 +697,7 @@ const ProductForm = () => {
             <button
               type="button"
               onClick={addCategoryRow}
-              className="inline-flex items-center justify-center rounded-lg border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-semibold text-rose-700 hover:bg-rose-100"
+              className="inline-flex items-center justify-center rounded-lg border border-rose-700 bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700"
             >
               + Add Category
             </button>
@@ -795,7 +759,7 @@ const ProductForm = () => {
                     type="button"
                     onClick={() => removeCategoryRow(index)}
                     disabled={formData.categoryRows.length === 1}
-                    className="h-11 rounded-lg border border-gray-200 bg-white px-4 text-sm font-semibold text-gray-600 hover:border-rose-200 hover:text-rose-700 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="h-11 rounded-lg border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 hover:border-rose-600 hover:bg-rose-50 hover:text-rose-800 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Remove
                   </button>
@@ -846,31 +810,6 @@ const ProductForm = () => {
                 }`}
               >
                 {size}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Colors */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Colors</h2>
-          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
-            {availableColors.map((color) => (
-              <button
-                key={color.name}
-                type="button"
-                onClick={() => handleColorToggle(color.name)}
-                className={`flex flex-col items-center gap-1.5 p-3 rounded-lg border transition-colors ${
-                  formData.colors.includes(color.name)
-                    ? 'border-rose-500 bg-rose-50 ring-2 ring-rose-200'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div
-                  className="w-8 h-8 rounded-full border border-gray-200 shadow-sm"
-                  style={{ backgroundColor: color.hex }}
-                />
-                <span className="text-xs font-medium text-gray-600">{color.name}</span>
               </button>
             ))}
           </div>
@@ -1007,7 +946,6 @@ const ProductForm = () => {
               { name: 'isTrending', label: 'Trending Now', desc: 'Show in homepage Trending Now section' },
               { name: 'isBestSeller', label: 'Best Seller', desc: 'Mark as best selling product' },
               { name: 'isNew', label: 'New Arrival', desc: 'Show as new product' },
-              { name: 'isBridal', label: 'Bridal Collection', desc: 'Part of bridal collection' },
             ].map((toggle) => (
               <label
                 key={toggle.name}

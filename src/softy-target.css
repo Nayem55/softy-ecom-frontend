@@ -5,7 +5,7 @@ body,button,input,textarea,select { font-family:"Manrope",Arial,sans-serif; }
 .softy-hero h1 { font-size:clamp(2.8rem,4.1vw,4.75rem); line-height:1.04; }
 .softy-section h2,.softy-promo h2,.softy-shop-hero h1,.softy-info h1 { line-height:1.14; }
 .softy-need h3 { font-weight:500; line-height:1.25; }
-.admin-shell :is(button,a)[class*="bg-oxblood"],.admin-shell :is(button,a)[class*="bg-rose"],.admin-login :is(button,a)[class*="bg-oxblood"],.admin-login :is(button,a)[class*="bg-rose"] { color:#fff !important; }
+.admin-shell :is(button,a)[class*="bg-oxblood"],.admin-shell :is(button,a)[class*="bg-rose-500"],.admin-shell :is(button,a)[class*="bg-rose-600"],.admin-shell :is(button,a)[class*="bg-rose-700"],.admin-login :is(button,a)[class*="bg-oxblood"],.admin-login :is(button,a)[class*="bg-rose-500"],.admin-login :is(button,a)[class*="bg-rose-600"],.admin-login :is(button,a)[class*="bg-rose-700"] { color:#fff !important; }
 .admin-login .bg-oxblood > * { color:#fff !important; }
 .softy-announcement { min-height:34px; padding:9px 16px; background:#f4f5fc; background-image:none; color:#35446e; font-size:11px; font-weight:650; letter-spacing:.03em; }
 .softy-header { background:rgb(255 253 253 / 95%); border-bottom-color:var(--softy-line); }

@@ -5,8 +5,8 @@ import toast from 'react-hot-toast';
 
 const TEMPLATE_HEADERS = [
   'Name', 'Description', 'Price', 'SalePrice', 'Stock',
-  'Category', 'Subcategory', 'Colors', 'Tags', 'Images',
-  'IsNew', 'IsTrending', 'IsFeatured', 'IsBestSeller', 'IsBridal',
+  'Category', 'Subcategory', 'Tags', 'Images',
+  'IsNew', 'IsTrending', 'IsFeatured', 'IsBestSeller',
 ];
 
 const TEMPLATE_EXAMPLES = [
@@ -18,14 +18,12 @@ const TEMPLATE_EXAMPLES = [
     Stock: 50,
     Category: 'Face Care',
     Subcategory: '',
-    Colors: '',
     Tags: 'cleanser,oil-control,daily-care',
     Images: 'https://example.com/img1.jpg,https://example.com/img2.jpg',
     IsNew: 'true',
     IsTrending: 'false',
     IsFeatured: 'false',
     IsBestSeller: 'false',
-    IsBridal: 'false',
   },
   {
     Name: 'Softyy Milk Soothing Gel',
@@ -35,14 +33,12 @@ const TEMPLATE_EXAMPLES = [
     Stock: 20,
     Category: 'Soothing Care',
     Subcategory: '',
-    Colors: '',
     Tags: 'soothing,hydration,daily-care',
     Images: 'https://example.com/softyy-gel.jpg',
     IsNew: 'true',
     IsTrending: 'false',
     IsFeatured: 'false',
     IsBestSeller: 'false',
-    IsBridal: 'false',
   },
 ];
 
@@ -184,14 +180,12 @@ export default function BulkImport({ onImportComplete }) {
               <div><span className="font-semibold text-gray-800">Stock</span> — Available stock quantity</div>
               <div><span className="font-semibold text-gray-800">Category</span> — Must match existing category name exactly</div>
               <div><span className="font-semibold text-gray-800">Subcategory</span> — Must match existing subcategory name exactly</div>
-              <div><span className="font-semibold text-gray-800">Colors</span> — Comma-separated (e.g., Red,Blue,Green)</div>
-              <div><span className="font-semibold text-gray-800">Tags</span> — Comma-separated (e.g., summer,bridal)</div>
+              <div><span className="font-semibold text-gray-800">Tags</span> — Comma-separated (e.g., cleanser,daily-care)</div>
               <div><span className="font-semibold text-gray-800">Images</span> — Comma-separated image URLs</div>
               <div><span className="font-semibold text-gray-800">IsNew</span> — true or false (default: true)</div>
               <div><span className="font-semibold text-gray-800">IsTrending</span> — true or false</div>
               <div><span className="font-semibold text-gray-800">IsFeatured</span> — true or false</div>
               <div><span className="font-semibold text-gray-800">IsBestSeller</span> — true or false</div>
-              <div><span className="font-semibold text-gray-800">IsBridal</span> — true or false</div>
             </div>
           </div>
         </div>
@@ -257,7 +251,6 @@ export default function BulkImport({ onImportComplete }) {
                   <th className="px-3 py-2 text-right font-medium text-gray-500">Price</th>
                   <th className="px-3 py-2 text-right font-medium text-gray-500">SalePrice</th>
                   <th className="px-3 py-2 text-left font-medium text-gray-500">Category</th>
-                  <th className="px-3 py-2 text-left font-medium text-gray-500">Colors</th>
                   <th className="px-3 py-2 text-center font-medium text-gray-500">Status</th>
                 </tr>
               </thead>
@@ -271,7 +264,6 @@ export default function BulkImport({ onImportComplete }) {
                       <td className="px-3 py-2 text-right text-gray-700">{row.Price || '-'}</td>
                       <td className="px-3 py-2 text-right text-gray-700">{row.SalePrice || '-'}</td>
                       <td className="px-3 py-2 text-gray-700">{row.Category || '-'}</td>
-                      <td className="px-3 py-2 text-gray-600">{row.Colors || '-'}</td>
                       <td className="px-3 py-2 text-center">
                         {rowError ? (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-rose-100 text-rose-700">

@@ -14,7 +14,6 @@ const FLAG_FIELDS = [
   { key: 'isBestSeller', label: 'Best Seller', color: 'purple' },
   { key: 'isFeatured', label: 'Featured', color: 'amber' },
   { key: 'isNew', label: 'New', color: 'blue' },
-  { key: 'isBridal', label: 'Bridal', color: 'pink' },
 ];
 
 const EMPTY_BULK = {
@@ -32,7 +31,6 @@ const EMPTY_BULK = {
   isFeatured: '',
   isBestSeller: '',
   isNew: '',
-  isBridal: '',
 };
 
 const getId = (value) => (typeof value === 'object' ? value?._id : value);

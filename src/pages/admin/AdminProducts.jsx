@@ -308,32 +308,6 @@ const AdminProducts = () => {
           toast.success(`${selectedProducts.length} product${selectedProducts.length > 1 ? 's' : ''} removed from new arrivals`);
           break;
 
-        case 'bridal':
-          await adminAPI.put('/admin/products/bulk-update', {
-            ids: selectedProducts,
-            updates: { isBridal: true },
-          });
-          setProducts((prev) =>
-            prev.map((p) =>
-              selectedProducts.includes(p._id) ? { ...p, isBridal: true } : p
-            )
-          );
-          toast.success(`${selectedProducts.length} product${selectedProducts.length > 1 ? 's' : ''} marked as bridal`);
-          break;
-
-        case 'unbridal':
-          await adminAPI.put('/admin/products/bulk-update', {
-            ids: selectedProducts,
-            updates: { isBridal: false },
-          });
-          setProducts((prev) =>
-            prev.map((p) =>
-              selectedProducts.includes(p._id) ? { ...p, isBridal: false } : p
-            )
-          );
-          toast.success(`${selectedProducts.length} product${selectedProducts.length > 1 ? 's' : ''} removed from bridal`);
-          break;
-
         default:
           toast.error('Select an action');
           return;
@@ -478,8 +452,6 @@ const AdminProducts = () => {
               <option value="unbestseller">Remove Bestseller</option>
               <option value="new">Set New Arrival</option>
               <option value="unnew">Remove New Arrival</option>
-              <option value="bridal">Set Bridal</option>
-              <option value="unbridal">Remove Bridal</option>
             </select>
             <button
               onClick={handleBulkAction}
@@ -652,11 +624,6 @@ const AdminProducts = () => {
                           {product.isNew && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700">
                               N
-                            </span>
-                          )}
-                          {product.isBridal && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-pink-100 text-pink-700">
-                              R
                             </span>
                           )}
                           <Link

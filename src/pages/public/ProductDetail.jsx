@@ -52,7 +52,6 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [reviews, setReviews] = useState([]);
@@ -69,7 +68,6 @@ export default function ProductDetail() {
         const productData = data.product || data.data || data;
         setProduct(productData);
         setSelectedImage(0);
-        setSelectedColor('');
         setQuantity(1);
 
         if (productData.category?._id || productData.category) {
@@ -106,12 +104,8 @@ export default function ProductDetail() {
   }, [product, isInWishlist]);
 
   const handleAddToCart = async () => {
-    if (product.colors?.length && !selectedColor) {
-      toast.error('Please select a color');
-      return;
-    }
     try {
-      await addToCart(product, selectedColor, quantity);
+      await addToCart(product, null, quantity);
       toast.success('Added to cart!', {
         style: { borderRadius: '8px', background: '#1a1a1a', color: '#FFFFF0' },
       });
@@ -215,7 +209,6 @@ export default function ProductDetail() {
   }
 
   const images = product.images?.length ? product.images : product.image ? [product.image] : ['/placeholder.jpg'];
-  const colors = product.colors || [];
   const additionalNote = typeof product.additionalNote === 'string' ? product.additionalNote.trim() : '';
   const editorial = productEditorial[product.slug] || {};
   const shortDescription = product.shortDescription?.trim() || editorial.summary || product.description || 'Thoughtful everyday skincare made for a comfortable, reliable routine.';
@@ -400,44 +393,6 @@ export default function ProductDetail() {
                 </div>
               )}
             </div>
-
-            <hr className="softy-detail-divider border-charcoal/10 my-6" />
-            {colors.length > 0 && (
-              <div className="mb-6">
-                <label className="block text-sm font-semibold text-charcoal mb-3">
-                  Color: <span className="font-normal capitalize text-charcoal/70">{selectedColor || 'Select'}</span>
-                </label>
-                <div className="flex flex-wrap gap-3">
-                  {colors.map((color) => {
-                    const colorValue = typeof color === 'object' ? color.value || color.name : color;
-                    const colorLabel = typeof color === 'object' ? color.name : color;
-                    const colorHex = typeof color === 'object' ? color.hex || colorValue : colorValue;
-                    return (
-                      <button
-                        key={colorValue}
-                        onClick={() => setSelectedColor(colorValue)}
-                        title={colorLabel}
-                        className={`relative w-10 h-10 rounded-full border-2 transition-all ${
-                          selectedColor === colorValue
-                            ? 'border-oxblood scale-110 ring-2 ring-oxblood/30'
-                            : 'border-charcoal/20 hover:scale-105'
-                        }`}
-                        style={{ backgroundColor: colorHex }}
-                      >
-                        {colorValue === 'white' && (
-                          <span className="absolute inset-0 rounded-full border border-charcoal/20" />
-                        )}
-                        {selectedColor === colorValue && (
-                          <svg className="absolute inset-0 m-auto w-4 h-4 text-white drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
 
             {additionalNote && (
               <div className="mb-6 border border-gold/35 bg-gold/10 px-4 py-3 rounded-lg">
