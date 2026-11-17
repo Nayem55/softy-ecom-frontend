@@ -5,6 +5,7 @@ import { optimizedImageUrl, optimizedImageSrcSet } from '../../utils/imageUrl';
 
 export default function HeroSlider() {
   const [banners, setBanners] = useState([]);
+  const [sliderSettings, setSliderSettings] = useState({ autoplay: true, intervalMs: 5000 });
   const [current, setCurrent] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -12,29 +13,19 @@ export default function HeroSlider() {
   const dragRef = useRef({ startX: 0, startY: 0, moved: false });
 
   useEffect(() => {
-    API.get('/banners').then(res => {
-      const b = res.data.banners || [];
-      if (b.length === 0) {
-        setBanners([
-          { title: 'Bridal Diaries', subtitle: 'The Wedding Edit', description: 'Bespoke bridal wear crafted to order  from mehndi to walima.', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1600&auto=format&fit=crop', linkText: 'Explore Bridal', link: '/shop?isBridal=true' },
-          { title: 'Everyday Luxe', subtitle: 'Unstitched & Ready-to-Wear', description: 'Premium lawn, chiffon and cotton silk  made to move with you.', image: 'https://images.unsplash.com/photo-1617019114583-affb34d1b3cd?q=80&w=1600&auto=format&fit=crop', linkText: 'Shop Women', link: '/shop' },
-        ]);
-      } else {
-        setBanners(b);
-      }
-    }).catch(() => {
-      setBanners([
-        { title: 'Eid Collection 2026', subtitle: 'Draped in Heritage', description: 'Hand-embroidered lawn and silk, cut for the modern Bangladeshi woman.', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1600&auto=format&fit=crop', linkText: 'Shop The Edit', link: '/shop' },
-        { title: 'Bridal Diaries', subtitle: 'The Wedding Edit', description: 'Bespoke bridal wear crafted to order.', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=1600&auto=format&fit=crop', linkText: 'Explore Bridal', link: '/shop?isBridal=true' },
-      ]);
-    });
+    Promise.all([API.get('/banners'), API.get('/settings')]).then(([bannerResponse, settingsResponse]) => {
+      setBanners(bannerResponse.data.banners || []);
+      const saved = settingsResponse.data.settings?.bannerSlider || {};
+      const intervalMs = Number(saved.intervalMs);
+      setSliderSettings({ autoplay: saved.autoplay !== false, intervalMs: Number.isFinite(intervalMs) ? Math.min(30000, Math.max(2000, intervalMs)) : 5000 });
+    }).catch(() => setBanners([]));
   }, []);
 
   useEffect(() => {
-    if (banners.length <= 1) return;
-    const timer = setInterval(() => setCurrent(c => (c + 1) % banners.length), 5000);
+    if (banners.length <= 1 || !sliderSettings.autoplay) return;
+    const timer = setInterval(() => setCurrent(c => (c + 1) % banners.length), sliderSettings.intervalMs);
     return () => clearInterval(timer);
-  }, [banners.length]);
+  }, [banners.length, sliderSettings.autoplay, sliderSettings.intervalMs]);
 
   const goToSlide = (index) => {
     if (!banners.length) return;
@@ -102,7 +93,7 @@ export default function HeroSlider() {
     }
   };
 
-  if (banners.length === 0) return <div className="h-[78vh] min-h-[460px] bg-blush animate-pulse" />;
+  if (banners.length === 0) return null;
 
   return (
     <section

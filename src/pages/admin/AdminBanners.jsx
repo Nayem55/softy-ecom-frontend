@@ -294,16 +294,21 @@ export default function AdminBanners() {
   const [editBanner, setEditBanner] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [sliderSettings, setSliderSettings] = useState({ autoplay: true, intervalMs: 5000 });
+  const [savingSliderSettings, setSavingSliderSettings] = useState(false);
 
   const fetchBanners = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await adminAPI.get('/admin/banners');
-      const data = res.data;
+      const [bannerResponse, settingsResponse] = await Promise.all([adminAPI.get('/admin/banners'), adminAPI.get('/admin/settings')]);
+      const data = bannerResponse.data;
       setBanners(
         (data.banners || data.data || data || []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
       );
+      const saved = settingsResponse.data.settings?.bannerSlider || {};
+      const intervalMs = Number(saved.intervalMs);
+      setSliderSettings({ autoplay: saved.autoplay !== false, intervalMs: Number.isFinite(intervalMs) ? Math.min(30000, Math.max(2000, intervalMs)) : 5000 });
     } catch (err) {
       console.error('Failed to fetch banners:', err);
       setError(err.response?.data?.message || 'Failed to load banners.');
@@ -344,6 +349,20 @@ export default function AdminBanners() {
       toast.error(err.response?.data?.message || 'Failed to save banner.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const saveSliderSettings = async () => {
+    setSavingSliderSettings(true);
+    try {
+      const intervalMs = Math.min(30000, Math.max(2000, Number(sliderSettings.intervalMs) || 5000));
+      await adminAPI.put('/admin/settings', { bannerSlider: { autoplay: sliderSettings.autoplay, intervalMs } });
+      setSliderSettings((current) => ({ ...current, intervalMs }));
+      toast.success('Banner slideshow settings saved');
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to save slideshow settings');
+    } finally {
+      setSavingSliderSettings(false);
     }
   };
 
@@ -405,6 +424,27 @@ export default function AdminBanners() {
           </button>
         }
       />
+
+      <section style={styles.sliderSettings}>
+        <div>
+          <h2 style={styles.sliderTitle}>Slideshow timing</h2>
+          <p style={styles.sliderDescription}>Control whether homepage banners switch automatically and how long each banner remains visible.</p>
+        </div>
+        <div style={styles.sliderControls}>
+          <label style={styles.toggleLabel}>
+            <input type="checkbox" checked={sliderSettings.autoplay} onChange={(event) => setSliderSettings((current) => ({ ...current, autoplay: event.target.checked }))} style={{ width: 18, height: 18, accentColor: '#be123c' }} />
+            Switch banners automatically
+          </label>
+          <label style={styles.intervalLabel}>
+            Switch every
+            <input type="number" min="2" max="30" step="1" disabled={!sliderSettings.autoplay} value={Math.round(sliderSettings.intervalMs / 1000)} onChange={(event) => setSliderSettings((current) => ({ ...current, intervalMs: Number(event.target.value || 0) * 1000 }))} style={{ ...styles.input, width: 76, padding: '8px 10px' }} />
+            seconds
+          </label>
+          <button type="button" style={{ ...styles.btn, background: '#be123c', color: '#fff', opacity: savingSliderSettings ? 0.65 : 1 }} onClick={saveSliderSettings} disabled={savingSliderSettings}>
+            {savingSliderSettings ? 'Saving...' : 'Save timing'}
+          </button>
+        </div>
+      </section>
 
       {/* Error */}
       {error && <ErrorDisplay message={error} onRetry={fetchBanners} />}
@@ -539,6 +579,12 @@ export default function AdminBanners() {
 // --- styles ----------------------------------------------------------------
 const styles = {
   container: { padding: 24, maxWidth: 1200, margin: '0 auto' },
+  sliderSettings: { marginBottom: 20, padding: 18, border: '1px solid #e2e8f0', borderRadius: 10, background: '#fff', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 18, flexWrap: 'wrap' },
+  sliderTitle: { margin: 0, color: '#26334d', fontSize: 16, fontWeight: 700 },
+  sliderDescription: { margin: '5px 0 0', color: '#53617a', fontSize: 13, lineHeight: 1.45 },
+  sliderControls: { display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' },
+  toggleLabel: { display: 'inline-flex', alignItems: 'center', gap: 8, color: '#26334d', fontSize: 13, fontWeight: 600, cursor: 'pointer' },
+  intervalLabel: { display: 'inline-flex', alignItems: 'center', gap: 7, color: '#374151', fontSize: 13, fontWeight: 600 },
   header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 },
   pageTitle: { fontSize: 24, fontWeight: 700, color: '#111827', margin: 0 },
   errorBanner: { background: '#fef2f2', color: '#b91c1c', padding: '12px 16px', borderRadius: 8, marginBottom: 16, border: '1px solid #fecaca' },
