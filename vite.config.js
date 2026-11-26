@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: { host: '0.0.0.0', port: 1001, strictPort: true, proxy: { '/api': 'http://127.0.0.1:1002', '/uploads': 'http://127.0.0.1:1002' } },
-  preview: { host: '0.0.0.0', port: 1001, strictPort: true },
+  preview: { host: '0.0.0.0', port: 1001, strictPort: true, allowedHosts: ['softyy.globalcosmeticslines.com'] },
 })
